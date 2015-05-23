@@ -67,21 +67,19 @@ public class CrashLog {
         }
     }
 
-    /*
-     * Need for TransactionController -> wraps around transaction name
+    /**
+     * @param genericTransactionName Human readable transactionname, will be made unique by combining with UUID
+     * @return
      */
-    public static CrashTransaction startTransaction() {
-        // TODO
-        return null;
+    public static CrashTransaction startTransaction(String genericTransactionName) {
+        return new CrashTransaction(crashReporters.values(), genericTransactionName);
     }
 
-    public static CrashTransaction stopTransaction() {
-        // TODO
-        return null;
+    public static void stopTransaction(CrashTransaction transaction) {
+        transaction.stopTransaction();
     }
 
-    public static CrashTransaction cancelTransaction() {
-        // TODO
-        return null;
+    public static void cancelTransaction(CrashTransaction transaction) {
+        transaction.cancelTransation();
     }
 }

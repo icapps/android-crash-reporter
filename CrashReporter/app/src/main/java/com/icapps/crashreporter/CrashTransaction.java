@@ -1,27 +1,35 @@
 package com.icapps.crashreporter;
 
+import java.util.Collection;
+
 /**
  * Created by Jeroen Mols on 21/05/15.
  */
 public class CrashTransaction {
 
-    private final CrashReporter crashReporter;
-    private final String        transactionName;
+    private final Collection<CrashReporter> crashReporters;
+    private final String                    transactionName;
 
-    public CrashTransaction(CrashReporter crashReporter, String transactionName) {
-        this.crashReporter = crashReporter;
+    public CrashTransaction(Collection<CrashReporter> crashReporters, String transactionName) {
+        this.crashReporters = crashReporters;
         this.transactionName = String.format("%s-%s", java.util.UUID.randomUUID().toString() + transactionName);
     }
 
     public void startTransaction() {
-        crashReporter.startTransaction(transactionName);
+        for (CrashReporter reporter : crashReporters) {
+            reporter.startTransaction(transactionName);
+        }
     }
 
     public void stopTransaction() {
-        crashReporter.stopTransaction(transactionName);
+        for (CrashReporter reporter : crashReporters) {
+            reporter.stopTransaction(transactionName);
+        }
     }
 
     public void cancelTransation() {
-        crashReporter.cancelTransaction(transactionName);
+        for (CrashReporter reporter : crashReporters) {
+            reporter.cancelTransaction(transactionName);
+        }
     }
 }
