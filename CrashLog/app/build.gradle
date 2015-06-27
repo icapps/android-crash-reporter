@@ -18,17 +18,12 @@ android {
     }
 }
 
-
 repositories {
-    jcenter()
-
-    maven {
-        url "https://mint.splunk.com/gradle/"
-    }
+    maven { url 'https://mint.splunk.com/gradle/' }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.splunk.mint:mint:4.2'
+    compile 'com.splunk.mint:mint:4.2.1'
 }
