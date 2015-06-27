@@ -19,4 +19,6 @@ public interface CrashFormatter {
 
     String formatExtraValue(String value);
 
+    String formatException(Exception exception);
+
 }
