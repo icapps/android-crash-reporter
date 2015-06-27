@@ -12,7 +12,7 @@ public class CrashTransaction {
 
     public CrashTransaction(Collection<CrashReporter> crashReporters, String transactionName) {
         this.crashReporters = crashReporters;
-        this.transactionName = String.format("%s-%s", java.util.UUID.randomUUID().toString() + transactionName);
+        this.transactionName = String.format("%s-%s", java.util.UUID.randomUUID().toString(), transactionName);
     }
 
     public void startTransaction() {
