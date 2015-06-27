@@ -5,7 +5,7 @@ package com.icapps.crashreporter;
  */
 public abstract class CrashReporter {
 
-    private final String apiKey;
+    protected final String apiKey;
 
     /**
      * Do not initialize CrashReporter in constructor.
