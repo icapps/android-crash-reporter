@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 public class CrashLog {
 
-    private static       CrashFormatter                 crashFormatter = new DefaultCrashFormatter();
+    private static CrashFormatter crashFormatter = new DefaultCrashFormatter();
     private static final HashMap<String, CrashReporter> crashReporters = new HashMap<>();
 
     public static void setCrashFormatter(CrashFormatter customCrashFormatter) {
@@ -72,7 +72,9 @@ public class CrashLog {
      * @return
      */
     public static CrashTransaction startTransaction(String genericTransactionName) {
-        return new CrashTransaction(crashReporters.values(), genericTransactionName);
+        CrashTransaction transaction = new CrashTransaction(crashReporters.values(), genericTransactionName);
+        transaction.startTransaction();
+        return transaction;
     }
 
     public static void stopTransaction(CrashTransaction transaction) {
