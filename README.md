@@ -3,6 +3,16 @@
 This pod integrates with your project to enable crash reporting.
 
 ## Installation ##
+Currently only git submodules are supported:
+
+- Add the android_crashlog as a git submodule to your project (via ssh) into a directory called "crashlog".
+- Add the following to your `settings.gradle` file": `include ':crashlog/crashlog'`
+- Add the following to your `build.gradle` file: `compile project(':crashlog/crashlog')`
+- Add additional behaviours to your Jenkins configuration:
+	- Under Git add `Additional behaviours` -> ` Advanced submodule behaviours`
+	- Select `recursively update submodules`
+ 
+
 // TODO -> add releases to maven repository
 
 ## Usage ##
