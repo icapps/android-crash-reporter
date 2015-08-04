@@ -30,7 +30,7 @@ Note that `CrashLog` does not require any initialisation call, all you need to d
 Start the `CrashLog` by adding a `CrashReporter` and optionally specifying a `CrashFormatter`.
 
 ```
-CrashLog.addCrashReporter(new SplunkCrashReporter("splunkkey"));
+CrashLog.add(new SplunkCrashReporter(<applicationcontext>, "splunkkey"));
 CrashLog.setCrashFormatter(new CustomCrashFormatter());
 ```
 // TODO specify different crash reporters
