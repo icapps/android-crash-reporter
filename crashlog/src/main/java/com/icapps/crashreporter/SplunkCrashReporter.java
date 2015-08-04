@@ -9,7 +9,7 @@ import com.splunk.mint.Mint;
  */
 public class SplunkCrashReporter extends CrashReporter {
 
-    private Context mContext;
+    private Context applicationContext;
 
     /**
      * Do not initialize CrashReporter in constructor.
@@ -17,14 +17,14 @@ public class SplunkCrashReporter extends CrashReporter {
      *
      * @param apiKey
      */
-    public SplunkCrashReporter(Context context, String apiKey) {
+    public SplunkCrashReporter(Context applicationContext, String apiKey) {
         super(apiKey);
-        mContext = context;
+        this.applicationContext = applicationContext;
     }
 
     @Override
     protected void initialize() {
-        Mint.initAndStartSession(mContext, this.apiKey);
+        Mint.initAndStartSession(applicationContext, this.apiKey);
     }
 
     @Override
