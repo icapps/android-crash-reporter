@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android_crashlog.iml" filepath="$PROJECT_DIR$/android_crashlog.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/crashlog.iml" filepath="$PROJECT_DIR$/app/crashlog.iml" />
     </modules>
   </component>
 </project>
