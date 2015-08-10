@@ -35,30 +35,29 @@ artifacts {
 }
 
 task lookForArtifacts {
-    def libraryName = ARTIFACT_NAME + '-' + ARTIFACT_VERSION + '.aar'
-    def repositoryPath = ARTIFACT_PACKAGE.replace(".", "/") + "/" + ARTIFACT_NAME + "/" + ARTIFACT_VERSION + "/" + libraryName
-    def repositoryUrl = 'https://api.bitbucket.org/1.0/repositories/icapps/maven_repository/raw/releases/' + repositoryPath
+    doLast {
+        def libraryName = ARTIFACT_NAME + '-' + ARTIFACT_VERSION + '.aar'
+        def repositoryPath = ARTIFACT_PACKAGE.replace(".", "/") + "/" + ARTIFACT_NAME + "/" + ARTIFACT_VERSION + "/" + libraryName
+        def repositoryUrl = 'https://api.bitbucket.org/1.0/repositories/icapps/maven_repository/raw/releases/' + repositoryPath
 
-    println("")
-    println("Checking if artifact already exists: " + libraryName)
-    println("at URL: " + repositoryUrl)
+        println("")
+        println("Checking if artifact already exists: " + libraryName)
+        println("at URL: " + repositoryUrl)
 
-    def artifactExists = urlExists(repositoryUrl)
-    println(artifactExists ? "existing artifact found" : "no existing artifact found")
-    println("")
+        def artifactExists = urlExists(repositoryUrl)
+        println(artifactExists ? "existing artifact found" : "no existing artifact found")
+        println("")
 
-    if (urlExists(repositoryUrl)) {
-        throw new RuntimeException("Artifact with version " + ARTIFACT_VERSION + " already exist - not executing uploadArchives")
+        if (urlExists(repositoryUrl)) {
+            throw new RuntimeException("Artifact with version " + ARTIFACT_VERSION + " already exist - not executing uploadArchives")
+        }
+        return true
     }
-    return true
 }
 
 uploadArchives.dependsOn lookForArtifacts
 
 uploadArchives {
-
-    println '######### TEST'
-    configurations.deployLibrary.dependencies.each { dep -> println dep.name }
 
     repositories.mavenDeployer {
         configuration = configurations.deployLibrary
