@@ -4,8 +4,7 @@ apply from: 'publish.gradle'
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
-
+    
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 21
