@@ -1,9 +1,40 @@
 # iCapps Crash Log #
-
-This pod integrates with your project to enable crash reporting.
+Wrapper library around different crash reporters to enable crash reporting in your project.
 
 ## Installation ##
-Currently only git submodules are supported:
+### Maven dependency
+Add the following to your top-level `build.gradle` file:
+
+```groovy
+allprojects {
+    repositories {
+        jcenter()
+
+        maven {
+            credentials {
+                username 'maven_readonly'
+                password 'RphfFukDEeuvbPhvxFsu'
+            }
+            url "https://api.bitbucket.org/1.0/repositories/icapps/maven_repository/raw/releases"
+        }
+        maven { url 'https://mint.splunk.com/gradle/' }
+    }
+}
+```
+
+Add a dependency on `CrashLog` to your `build.gradle` file:
+
+```groovy
+dependencies {
+    compile "com.icapps.crashreporter:crashlog:<version>"
+}
+```
+
+For the latest version, please have a look at the `gradle.properties` file or check the [maven_repository](https://bitbucket.org/icapps/maven_repository)
+
+
+### Git Submodule
+For development you can also included it as a git submodule, but make sure to step over to a maven dependency when the app goes into production.
 
 - Add the android_crashlog as a git submodule to your project (via ssh) into a directory called "crashlog".
 - Add the following to your `settings.gradle` file": `include ':crashlog/crashlog'`
@@ -11,9 +42,6 @@ Currently only git submodules are supported:
 - Add additional behaviours to your Jenkins configuration:
 	- Under Git add `Additional behaviours` -> ` Advanced submodule behaviours`
 	- Select `recursively update submodules`
- 
-
-// TODO -> add releases to maven repository
 
 ## Usage ##
 
@@ -33,7 +61,10 @@ Start the `CrashLog` by adding a `CrashReporter` and optionally specifying a `Cr
 CrashLog.add(new SplunkCrashReporter(<applicationcontext>, "splunkkey"));
 CrashLog.setCrashFormatter(new CustomCrashFormatter());
 ```
-// TODO specify different crash reporters
+Currently the following `CrashReporters` are supported:
+
+- SplunkCrashReporter
+- GoogleAnalyticsCrashReporter
 
 **Set the user identifier:**
 ```
@@ -49,8 +80,7 @@ CrashLog.logBreadcrumb(String viewName);
 CrashLog.logHTTPFailure(HttpURLConnection httpUrlConnection);
 ```
 
-// TODO: specify format
-Directly pass an NSHTTPURLResponse object. This will log an event in the following format:
+Directly pass an HttpUrlConnect object. This will log an event in the following format:
 <HTTPMETHOD>: <ERRORCODE>: <SERVICEURL> 
 (for example: GET: 404: http://test.com/function)
 
