@@ -21,8 +21,10 @@ public class DefaultCrashFormatter implements CrashFormatter {
 
     @Override
     public String formatHttpFailure(HttpURLConnection httpURLConnection) {
-        // TODO
-        return "";
+        String requestMethod = httpURLConnection.getRequestMethod();
+        int responseCode = httpURLConnection.getResponseCode();
+        String url = httpURLConnection.getURL().toString();
+        return String.format("%s: %d: %s", requestMethod, responseCode, url)
     }
 
     @Override
