@@ -31,7 +31,7 @@ public class GoogleAnalyticsCrashReporter extends CrashReporter {
     }
 
     @Override
-    protected void setSetUserIdentifier(String userIdentifier) {
+    protected void setUserIdentifier(String userIdentifier) {
         tracker.set("&uid", userIdentifier);
         tracker.send(new HitBuilders.EventBuilder().setCategory("UX").setAction("User Signed In").setLabel(null).build());
     }

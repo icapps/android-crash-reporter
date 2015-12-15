@@ -21,7 +21,7 @@ public abstract class CrashReporter {
 
     protected abstract void initialize();
 
-    protected abstract void setSetUserIdentifier(String userIdentifier);
+    protected abstract void setUserIdentifier(String userIdentifier);
 
     protected abstract void logBreadcrumb(String breadcrumb);
 

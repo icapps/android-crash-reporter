@@ -25,15 +25,15 @@ public class CrashLog {
         crashReporters.put(crashReporter.getIdentifier(), crashReporter);
     }
 
-    public static void setSetUserIdentifier(String userIdentifier) {
+    public static void setUserIdentifier(String userIdentifier) {
         String formattedUserIdentifier = crashFormatter.formatUserIdentifier(userIdentifier);
         for (CrashReporter reporter : crashReporters.values()) {
-            reporter.setSetUserIdentifier(formattedUserIdentifier);
+            reporter.setUserIdentifier(formattedUserIdentifier);
         }
     }
 
-    public static void logBreadcrumb(String viewName) {
-        String formattedBreadcrumb = crashFormatter.formatBreadCrumb(viewName);
+    public static void logBreadcrumb(String breadCrumb) {
+        String formattedBreadcrumb = crashFormatter.formatBreadCrumb(breadCrumb);
         for (CrashReporter reporter : crashReporters.values()) {
             reporter.logBreadcrumb(formattedBreadcrumb);
         }

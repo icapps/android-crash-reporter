@@ -28,7 +28,7 @@ public class SplunkCrashReporter extends CrashReporter {
     }
 
     @Override
-    protected void setSetUserIdentifier(String userIdentifier) {
+    protected void setUserIdentifier(String userIdentifier) {
         Mint.setUserIdentifier(userIdentifier);
     }
 
