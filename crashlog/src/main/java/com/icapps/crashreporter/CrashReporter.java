@@ -5,36 +5,43 @@ package com.icapps.crashreporter;
  */
 public abstract class CrashReporter {
 
-    protected final String apiKey;
+	protected final String apiKey;
+	protected final int    apiResId;
 
-    /**
-     * Do not initialize CrashReporter in constructor.
-     * This must be done in the initialize method to avoid multiple instantiations.
-     */
-    public CrashReporter(String apiKey) {
-        this.apiKey = apiKey;
-    }
+	/**
+	 * Do not initialize CrashReporter in constructor.
+	 * This must be done in the initialize method to avoid multiple instantiations.
+	 */
+	public CrashReporter(String apiKey) {
+		this.apiKey = apiKey;
+		this.apiResId = 0;
+	}
 
-    protected String getIdentifier() {
-        return getClass().getSimpleName();
-    }
+	public CrashReporter(int apiResId) {
+		this.apiKey = null;
+		this.apiResId = 0;
+	}
 
-    protected abstract void initialize();
+	protected String getIdentifier() {
+		return getClass().getSimpleName();
+	}
 
-    protected abstract void setUserIdentifier(String userIdentifier);
+	protected abstract void initialize();
 
-    protected abstract void logBreadcrumb(String breadcrumb);
+	protected abstract void setUserIdentifier(String userIdentifier);
 
-    protected abstract void logEvent(String event);
+	protected abstract void logBreadcrumb(String breadcrumb);
 
-    protected abstract void logException(Exception exception);
+	protected abstract void logEvent(String event);
 
-    protected abstract void logExtraData(String key, String value);
+	protected abstract void logException(Exception exception);
 
-    protected abstract void startTransaction(String transactionName);
+	protected abstract void logExtraData(String key, String value);
 
-    protected abstract void stopTransaction(String transactionName);
+	protected abstract void startTransaction(String transactionName);
 
-    protected abstract void cancelTransaction(String transactionName);
+	protected abstract void stopTransaction(String transactionName);
+
+	protected abstract void cancelTransaction(String transactionName);
 
 }
