@@ -1,5 +1,9 @@
 package crashreporter.googleanalytics;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.icapps.crashreporter.CrashReporter;
@@ -13,7 +17,14 @@ import java.io.StringWriter;
  */
 public class GoogleAnalyticsCrashReporter implements CrashReporter {
 
-	private Tracker mTracker;
+	private final Tracker mTracker;
+
+	public GoogleAnalyticsCrashReporter(@NonNull final Context context, @NonNull final String apiKey) {
+		final GoogleAnalytics googleAnalytics = GoogleAnalytics.getInstance(context.getApplicationContext());
+
+		mTracker = googleAnalytics.newTracker(apiKey);
+		mTracker.enableExceptionReporting(true);
+	}
 
 	@Override
 	public void setUserIdentifier(final String userIdentifier) {
