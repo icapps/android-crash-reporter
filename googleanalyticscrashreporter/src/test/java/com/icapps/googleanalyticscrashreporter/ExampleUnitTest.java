@@ -1,4 +1,4 @@
-package com.icapps.crashlog;
+package com.icapps.googleanalyticscrashreporter;
 
 import org.junit.Test;
 

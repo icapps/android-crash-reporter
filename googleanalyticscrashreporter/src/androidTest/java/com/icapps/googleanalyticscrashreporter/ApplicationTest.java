@@ -1,4 +1,4 @@
-package com.icapps.crashlog;
+package com.icapps.googleanalyticscrashreporter;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
