@@ -27,85 +27,33 @@ Add a dependency on `CrashLog` to your `build.gradle` file:
 ```groovy
 dependencies {
     compile "com.icapps.crashreporter:crashlog:<version>"
+		
+	//One or more:
+	compile "com.icapps.crashreporter:crashlog-crittercism:<version>"
+	compile "com.icapps.crashreporter:crashlog-googlenalytics:<version>"
+	
+	//When you use the crittercism logger
+	compile 'com.crittercism:crittercism-android-agent:<version>' //The library currently works verified against 5.5.5
+	
+	//When you use the google analytics logger
+	compile 'com.google.android.gms:play-services-analytics:<version>' //The library is currently verified against 8.4.0
 }
 ```
 
 For the latest version, please have a look at the `gradle.properties` file or check the [maven_repository](https://bitbucket.org/icapps/maven_repository)
 
 
-### Git Submodule
-For development you can also included it as a git submodule, but make sure to step over to a maven dependency when the app goes into production.
-
-- Add the android_crashlog as a git submodule to your project (via ssh) into a directory called "crashlog".
-- Add the following to your `settings.gradle` file": `include ':crashlog/crashlog'`
-- Add the following to your `build.gradle` file: `compile project(':crashlog/crashlog')`
-- Add additional behaviours to your Jenkins configuration:
-	- Under Git add `Additional behaviours` -> ` Advanced submodule behaviours`
-	- Select `recursively update submodules`
-
 ## Usage ##
 
 The component consists of three major parts:
 
-- `CrashLog`: Static class to interface with the component. To start reporting crashes, at least one `CrashReporter` needs to be added. When reporting crashes, all of the added `CrashReporters` will report the crash to their service.
-- `CrashReporter`: Generic class that interfaces with an actual crash reporting service. Add one or more subclasses to `CrashLog` to start reporting crashes.
-- `CrashFormatter`: Utility class to apply a custom formatting to HTTP failures or breadcrumbs. When not set on the `CrashLog`, the `DefaultCrashFormatter` will be used.
-
-Note that `CrashLog` does not require any initialisation call, all you need to do is add `CrashReporter`s to start reporting crashes. Every `CrashReporter` can only be added once, adding it more than once (or a second instance of the same class), won't have any effect.
+- `CrashLog`: Static class to interface with the component. To start reporting crashes, configure it during application startup with a crash reporter
+- `CrashReporter`: Interface for crash loggers
+- `CompoundCrashReporter`: Helper CrashReporter that dispatches the crashes to multiple configured crash loggers, usefull when using multiple crash loggers in the same project
 
 ### Functions: ###
 
-Start the `CrashLog` by adding a `CrashReporter` and optionally specifying a `CrashFormatter`.
-
-```
-CrashLog.add(new SplunkCrashReporter(<applicationcontext>, "splunkkey"));
-CrashLog.setCrashFormatter(new CustomCrashFormatter());
-```
 Currently the following `CrashReporters` are supported:
 
-- SplunkCrashReporter
+- CrittercismCrashreporter
 - GoogleAnalyticsCrashReporter
-
-**Set the user identifier:**
-```
-CrashLog.setUserIdentifier(String userIdentifier);
-```
-**Breadcrumb logging:**
-```
-CrashLog.logBreadcrumb(String viewName);
-```
-
-**Service failure logging:**
-```
-CrashLog.logHTTPFailure(HttpURLConnection httpUrlConnection);
-```
-
-Directly pass an HttpUrlConnect object. This will log an event in the following format:
-<HTTPMETHOD>: <ERRORCODE>: <SERVICEURL> 
-(for example: GET: 404: http://test.com/function)
-
-**Log event:**
-```
-CrashLog.logEvent(String event);
-```
-
-**Log handled exception:**
-```
-CrashLog.logException(Exception caughtException);
-```
-Takes an Exception object as argument
-
-**Logging additional information:**
-```
-CrashLog.logExtraData(String key, String value);
-```
-
-**Transactions**
-```
-//Create and start a new transaction
-CrashTransaction transaction = CrashLog.startTransaction(String genericTransactionName);
-//Stopping the transaction
-transaction.stopTransaction();
-//Cancelling the transaction
-transaction.cancelTransaction();
-```
