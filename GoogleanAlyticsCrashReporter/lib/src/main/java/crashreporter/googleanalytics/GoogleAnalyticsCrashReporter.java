@@ -51,6 +51,11 @@ public class GoogleAnalyticsCrashReporter implements CrashReporter {
 		mTracker.send(new HitBuilders.EventBuilder().setCategory(key).setAction(value.toString()).setLabel("").build());
 	}
 
+	@Override
+	public boolean didCrashLastSession() {
+		return false;
+	}
+
 	private String constructMessage(final Throwable error) {
 		try {
 			final StringWriter writer = new StringWriter();

@@ -53,4 +53,14 @@ public class CompoundCrashReporter implements CrashReporter {
 			crashReporter.logData(key, value);
 		}
 	}
+
+	@Override
+	public boolean didCrashLastSession() {
+		for (final CrashReporter crashReporter : mCrashReporters) {
+			if (crashReporter.didCrashLastSession()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

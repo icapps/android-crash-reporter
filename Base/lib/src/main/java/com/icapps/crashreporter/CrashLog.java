@@ -42,4 +42,11 @@ public class CrashLog {
 		}
 	}
 
+	public static boolean didCrashLastSession() {
+		if (mCrashReporter != null) {
+			return mCrashReporter.didCrashLastSession();
+		}
+		return false;
+	}
+
 }

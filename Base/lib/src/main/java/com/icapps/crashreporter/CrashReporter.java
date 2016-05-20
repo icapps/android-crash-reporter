@@ -16,4 +16,6 @@ public interface CrashReporter {
 
 	void logData(final String key, final Object value);
 
+	boolean didCrashLastSession();
+
 }

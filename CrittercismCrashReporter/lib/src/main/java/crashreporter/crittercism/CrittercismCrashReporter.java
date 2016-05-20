@@ -45,6 +45,11 @@ public class CrittercismCrashReporter implements CrashReporter {
 		//Not supported
 	}
 
+	@Override
+	public boolean didCrashLastSession() {
+		return Crittercism.didCrashOnLastLoad();
+	}
+
 	public static class Config {
 		public boolean logNetworkCalls = true;
 		public boolean includeVersionCode = true;
