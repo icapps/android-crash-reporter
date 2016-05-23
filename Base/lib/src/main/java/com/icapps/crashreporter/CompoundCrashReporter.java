@@ -1,5 +1,7 @@
 package com.icapps.crashreporter;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,39 +18,41 @@ public class CompoundCrashReporter implements CrashReporter {
 	}
 
 	public void addCrashLogger(final CrashReporter reporter) {
-		mCrashReporters.add(reporter);
+		if (reporter != null) {
+			mCrashReporters.add(reporter);
+		}
 	}
 
 	@Override
-	public void setUserIdentifier(final String userIdentifier) {
+	public void setUserIdentifier(@Nullable final String userIdentifier) {
 		for (final CrashReporter crashReporter : mCrashReporters) {
 			crashReporter.setUserIdentifier(userIdentifier);
 		}
 	}
 
 	@Override
-	public void leaveBreadcrumb(final String breadCrumb) {
+	public void leaveBreadcrumb(@Nullable final String breadCrumb) {
 		for (final CrashReporter crashReporter : mCrashReporters) {
 			crashReporter.leaveBreadcrumb(breadCrumb);
 		}
 	}
 
 	@Override
-	public void logEvent(final String event) {
+	public void logEvent(@Nullable final String event) {
 		for (final CrashReporter crashReporter : mCrashReporters) {
 			crashReporter.logEvent(event);
 		}
 	}
 
 	@Override
-	public void logHandledException(final Throwable handledError) {
+	public void logHandledException(@Nullable final Throwable handledError) {
 		for (final CrashReporter crashReporter : mCrashReporters) {
 			crashReporter.logHandledException(handledError);
 		}
 	}
 
 	@Override
-	public void logData(final String key, final Object value) {
+	public void logData(final String key, @Nullable final Object value) {
 		for (final CrashReporter crashReporter : mCrashReporters) {
 			crashReporter.logData(key, value);
 		}
@@ -62,5 +66,12 @@ public class CompoundCrashReporter implements CrashReporter {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void logNetworkRequest(@Nullable final String method, @Nullable final String url, final int responseCode) {
+		for (final CrashReporter crashReporter : mCrashReporters) {
+			crashReporter.logNetworkRequest(method, url, responseCode);
+		}
 	}
 }
