@@ -30,7 +30,7 @@ dependencies {
 		
 	//One or more:
 	compile "com.icapps.crashreporter:crashlog-crittercism:<version>"
-	compile "com.icapps.crashreporter:crashlog-googlenalytics:<version>"
+	compile "com.icapps.crashreporter:crashlog-googleanalytics:<version>"
 	
 	//When you use the crittercism logger
 	compile 'com.crittercism:crittercism-android-agent:<version>' //The library currently works verified against 5.5.5
