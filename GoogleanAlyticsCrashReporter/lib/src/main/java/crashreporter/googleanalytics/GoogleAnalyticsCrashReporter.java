@@ -27,6 +27,11 @@ public class GoogleAnalyticsCrashReporter implements CrashReporter {
 		mTracker.enableExceptionReporting(true);
 	}
 
+	public GoogleAnalyticsCrashReporter(@NonNull final Tracker tracker) {
+		mTracker = tracker;
+		mTracker.enableExceptionReporting(true);
+	}
+
 	@Override
 	public void setUserIdentifier(final String userIdentifier) {
 		mTracker.set("&uid", userIdentifier);
