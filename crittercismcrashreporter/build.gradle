@@ -17,7 +17,7 @@ allprojects {
         jcenter()
 
         maven {
-            url "s3://icappsmaven/relaese"
+            url "s3://icappsmaven/release"
             credentials(AwsCredentials) {
                 accessKey AWS_ACCESS_KEY
                 secretKey AWS_SECRET_KEY
