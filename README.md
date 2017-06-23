@@ -6,6 +6,16 @@ Wrapper library around different crash reporters to enable crash reporting in yo
 Add the following to your top-level `build.gradle` file:
 
 ```groovy
+
+ buildscript {
+     repositories {
+        maven { url 'https://maven.fabric.io/public' } //only when you use fabric crashlytics
+     }
+     dependencies {
+        classpath 'io.fabric.tools:gradle:1.21.6' //only when you use fabric crashlytics
+     }
+ }
+
 allprojects {
     repositories {
         jcenter()
@@ -18,6 +28,8 @@ allprojects {
             url "https://api.bitbucket.org/1.0/repositories/icapps/maven_repository/raw/releases"
         }
         maven { url 'https://mint.splunk.com/gradle/' }
+        
+        maven { url 'https://maven.fabric.io/public' } //only when you use fabric crashlytics
     }
 }
 ```
@@ -30,6 +42,7 @@ dependencies {
 		
 	//One or more:
 	compile "com.icapps.crashreporter:crashlog-crittercism:<version>"
+    compile "com.icapps.crashreporter:crashlog-crashlytics:<version>"
 	compile "com.icapps.crashreporter:crashlog-googleanalytics:<version>"
 	
 	//When you use the crittercism logger
@@ -38,6 +51,16 @@ dependencies {
 	//When you use the google analytics logger
 	compile 'com.google.android.gms:play-services-analytics:<version>' //The library is currently verified against 8.4.0
 }
+```
+
+For Fabric's Crashlytics, apply the plugin in your `build.gradle` file:
+```groovy
+apply plugin: 'io.fabric'
+```
+
+For Fabric's Crashlytics, add meta-data to your AndroidManifest file:
+```groovy
+<meta-data android:name="io.fabric.ApiKey" android:value="xxx" />
 ```
 
 For the latest version, please have a look at the `gradle.properties` file or check the [maven_repository](https://bitbucket.org/icapps/maven_repository)
