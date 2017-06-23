@@ -10,7 +10,6 @@ buildscript {
 
 apply plugin: 'com.android.library'
 apply from: 'publish.gradle'
-apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
