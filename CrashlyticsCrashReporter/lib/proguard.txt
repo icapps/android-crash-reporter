@@ -16,8 +16,7 @@
 #   public *;
 #}
 
--keep public class io.fabric.**
--keepclassmembers public class io.fabric.*
-{
-    *;
-}
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable

@@ -6,14 +6,22 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.icapps.crashreporter.CrashReporter;
 
+import io.fabric.sdk.android.BuildConfig;
 import io.fabric.sdk.android.Fabric;
 
 public class CrashlyticsCrashReporter implements CrashReporter {
 
 	public CrashlyticsCrashReporter(@NonNull final Context context) {
-		Fabric.with(context, new Crashlytics());
+		// Set up Crashlytics, disabled for debug builds
+		final Crashlytics crashlyticsKit = new Crashlytics.Builder()
+				.core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+				.build();
+
+		// Initialize Fabric with the debug-disabled crashlytics
+		Fabric.with(context, crashlyticsKit);
 	}
 
 	@Override
