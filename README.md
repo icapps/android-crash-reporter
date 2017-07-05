@@ -20,13 +20,6 @@ allprojects {
     repositories {
         jcenter()
 
-        maven {
-            credentials {
-                username 'maven_readonly'
-                password 'RphfFukDEeuvbPhvxFsu'
-            }
-            url "https://api.bitbucket.org/1.0/repositories/icapps/maven_repository/raw/releases"
-        }
         maven { url 'https://mint.splunk.com/gradle/' }
         
         maven { url 'https://maven.fabric.io/public' } //only when you use fabric crashlytics
@@ -46,10 +39,16 @@ dependencies {
 	compile "com.icapps.crashreporter:crashlog-googleanalytics:<version>"
 	
 	//When you use the crittercism logger
-	compile 'com.crittercism:crittercism-android-agent:<version>' //The library currently works verified against 5.5.5
+	compile 'com.crittercism:crittercism-android-agent:<version>' //The library currently works verified against 5.6.4
 	
 	//When you use the google analytics logger
-	compile 'com.google.android.gms:play-services-analytics:<version>' //The library is currently verified against 8.4.0
+	compile 'com.google.android.gms:play-services-analytics:<version>' //The library is currently verified against 11.0.2
+
+	//When you use the crashlytics crash logger
+	compile('com.crashlytics.sdk.android:crashlytics:<version>@aar') { //The library is currently verified against 2.6.8
+		transitive = true;
+	}
+
 }
 ```
 
@@ -80,3 +79,4 @@ Currently the following `CrashReporters` are supported:
 
 - CrittercismCrashreporter
 - GoogleAnalyticsCrashReporter
+- CrashlyticsCrashReporter
