@@ -24,29 +24,61 @@ artifacts {
     archives androidJavadocsJar
 }
 
-publishing {
-    repositories {
-        maven {
-            url "s3://icappsmaven/release"
-            credentials(AwsCredentials) {
-                accessKey AWS_ACCESS_KEY
-                secretKey AWS_SECRET_KEY
-            }
+
+bintray {
+    user = System.getenv('ICAPPS_BINTRAY_USER')
+    key = System.getenv('ICAPPS_BINTRAY_KEY')
+    pkg {
+        repo = 'maven'
+        name = 'crashlog-crittercism'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/icapps/android-crash-reporter'
+
+        version {
+            name = "$ARTIFACT_VERSION"
+            desc = "iCapps crash reporter library for crittercism"
+            released = new Date()
         }
     }
+    publications = ['MyPublication']
+}
 
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            name "Nicola Verbeeck"
+            email "nicola@chimerapps.com"
+            organization "Chimerapps"
+        }
+    }
+}
+
+publishing {
     publications {
-        maven(MavenPublication) {
+        MyPublication(MavenPublication) {
+            artifact("$buildDir/outputs/aar/lib-release.aar")
+            artifact androidSourcesJar {
+                classifier "sources"
+            }
+            artifact androidJavadocsJar
             groupId "$ARTIFACT_PACKAGE"
             version "$ARTIFACT_VERSION"
             artifactId "$ARTIFACT_NAME"
-            artifact("$buildDir/outputs/aar/lib-release.aar")
-
-            artifact androidSourcesJar
-            artifact androidJavadocsJar
-
             pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
+                def root = asNode()
+                root.appendNode('description', 'iCapps crash reporter library for crittercism')
+                root.appendNode('name', 'crashlog-crittercism')
+                root.appendNode('url', 'https://github.com/icapps/android-crash-reporter')
+                root.children().last() + pomConfig
+
+                def dependenciesNode = root.appendNode('dependencies')
 
                 //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
                 configurations.compile.allDependencies.each {
