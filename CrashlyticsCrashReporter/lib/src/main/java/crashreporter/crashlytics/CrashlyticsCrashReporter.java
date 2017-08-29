@@ -35,92 +35,117 @@ import io.fabric.sdk.android.Fabric;
 
 public class CrashlyticsCrashReporter implements CrashReporter {
 
-	private boolean mHasCrashed = false;
-	private final boolean mLogNetworkRequests;
+    private static final String TAG = CrashlyticsCrashReporter.class.getSimpleName();
 
-	public CrashlyticsCrashReporter(@NonNull final Context context, @NonNull final Config config) {
-		final CrashlyticsListener listener = new CrashlyticsListener() {
-			@Override
-			public void crashlyticsDidDetectCrashDuringPreviousExecution() {
-				mHasCrashed = true;
-			}
-		};
+    private boolean mHasCrashed = false;
+    private final boolean mLogNetworkRequests;
 
-		final CrashlyticsCore core = new CrashlyticsCore.Builder().listener(listener).build();
+    public CrashlyticsCrashReporter(@NonNull final Context context, @NonNull final Config config) {
+        if (config.debugging) {
+            Log.d(TAG, "Initializing crashlytics crash reporter");
+        }
+        final CrashlyticsListener listener = new CrashlyticsListener() {
+            @Override
+            public void crashlyticsDidDetectCrashDuringPreviousExecution() {
+                mHasCrashed = true;
+            }
+        };
 
-		final Crashlytics.Builder builder = new Crashlytics.Builder();
-		builder.core(core);
-		if (config.enableAnswers) {
-			builder.answers(new Answers());
-		}
-		mLogNetworkRequests = config.logNetworkCalls;
+        if (config.debugging) {
+            Log.d(TAG, "Creating core with crash session listener");
+        }
+        final CrashlyticsCore core = new CrashlyticsCore.Builder()
+                .listener(listener)
+                .build();
 
-		Fabric.with(context, builder.core(core).build());
-	}
+        if (config.debugging) {
+            Log.d(TAG, "Creating builder");
+        }
+        final Crashlytics.Builder builder = new Crashlytics.Builder();
+        if (config.debugging) {
+            Log.d(TAG, "Setting core");
+        }
+        builder.core(core);
+        if (config.debugging) {
+            Log.d(TAG, "Checking if we need answers: " + config.enableAnswers);
+        }
+        if (config.enableAnswers) {
+            builder.answers(new Answers());
+        }
+        mLogNetworkRequests = config.logNetworkCalls;
+        if (config.debugging) {
+            Log.d(TAG, "Init fabric");
+        }
+        Fabric.with(new Fabric.Builder(context)
+                .debuggable(config.debugging)
+                .kits(builder.build())
+                .build());
+    }
 
-	@Override
-	public void setUserIdentifier(@Nullable final String userIdentifier) {
-		Crashlytics.setUserIdentifier(userIdentifier);
-	}
+    @Override
+    public void setUserIdentifier(@Nullable final String userIdentifier) {
+        Crashlytics.setUserIdentifier(userIdentifier);
+    }
 
-	@Override
-	public void leaveBreadcrumb(@Nullable final String breadCrumb) {
-		if (breadCrumb == null) {
-			return;
-		}
-		Crashlytics.log(breadCrumb);
-	}
+    @Override
+    public void leaveBreadcrumb(@Nullable final String breadCrumb) {
+        if (breadCrumb == null) {
+            return;
+        }
+        Crashlytics.log(breadCrumb);
+    }
 
-	@Override
-	public void logEvent(@Nullable final String event) {
-		if (event == null) {
-			return;
-		}
+    @Override
+    public void logEvent(@Nullable final String event) {
+        if (event == null) {
+            return;
+        }
 
-		final Answers answers = Answers.getInstance();
-		if (answers == null) {
-			return;
-		}
-		answers.logCustom(new CustomEvent(event));
-	}
+        final Answers answers = Answers.getInstance();
+        if (answers == null) {
+            return;
+        }
+        answers.logCustom(new CustomEvent(event));
+    }
 
-	@Override
-	public void logHandledException(@Nullable final Throwable handledError) {
-		if (handledError == null) {
-			return;
-		}
-		Crashlytics.logException(handledError);
-	}
+    @Override
+    public void logHandledException(@Nullable final Throwable handledError) {
+        if (handledError == null) {
+            return;
+        }
+        Crashlytics.logException(handledError);
+    }
 
-	@Override
-	public void logData(final String key, @Nullable final Object value) {
-		Crashlytics.log(Log.DEBUG, key, String.valueOf(value));
-	}
+    @Override
+    public void logData(final String key, @Nullable final Object value) {
+        Crashlytics.log(Log.DEBUG, key, String.valueOf(value));
+    }
 
-	@Override
-	public boolean didCrashLastSession() {
-		return mHasCrashed;
-	}
+    @Override
+    public boolean didCrashLastSession() {
+        return mHasCrashed;
+    }
 
-	@Override
-	public void logNetworkRequest(@Nullable final String method, @Nullable final String url, final int responseCode) {
-		if (mLogNetworkRequests) {
-			final Answers answers = Answers.getInstance();
-			if (answers == null) {
-				return;
-			}
+    @Override
+    public void logNetworkRequest(@Nullable final String method, @Nullable final String url, final int responseCode) {
+        if (mLogNetworkRequests) {
+            final Answers answers = Answers.getInstance();
+            if (answers == null) {
+                return;
+            }
 
-			final CustomEvent event = new CustomEvent("network");
-			event.putCustomAttribute("method", (method == null) ? "Unknown" : method);
-			event.putCustomAttribute("url", (url == null) ? "Unknown" : url);
-			event.putCustomAttribute("response", responseCode);
+            final CustomEvent event = new CustomEvent("network");
+            event.putCustomAttribute("method", (method == null) ? "Unknown" : method);
+            event.putCustomAttribute("url", (url == null) ? "Unknown" : url);
+            event.putCustomAttribute("response", responseCode);
 
-			answers.logCustom(event);
-		}
-	}
+            answers.logCustom(event);
+        }
+    }
 
-	public static class Config {
-		public boolean logNetworkCalls = false;
-		public boolean enableAnswers = true;
-	}
+    public static class Config {
+        public boolean logNetworkCalls = false;
+        public boolean enableAnswers = true;
+        public boolean debugging = false;
+    }
 }
