@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+
+sourceCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        consumerProguardFiles 'proguard-rules.pro'
+        minSdkVersion 14
+    }
+}
+
+dependencies {
+    api project(':crashlog')
+
+    compileOnly 'com.google.android.gms:play-services-analytics:17.0.0'
+    compileOnly 'androidx.annotation:annotation:1.1.0'
+}
+
+ext {
+    artifactVersion = '3.0.0'
+    artifactName = 'crashlog-googleanalytics'
+    artifactGroup = 'com.icapps.crashreporter'
+    artifactDescription = 'iCapps crash reporter library for google analytics'
+}
+
+apply from: "${rootProject.projectDir}/scripts/publish-mavencentral-android.gradle"
+
+signReleasePublication {
+    dependsOn assemble
+}

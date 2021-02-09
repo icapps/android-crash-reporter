@@ -1,6 +1,8 @@
 
 # Created by https://www.gitignore.io/api/gradle,android,intellij,osx,java
 
+signing.properties
+
 ### Android ###
 # Built application files
 *.apk
@@ -159,9 +161,9 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
-GoogleanAlyticsCrashReporter/.idea/libraries
+crashlog-googleanalytics/.idea/libraries
 Base/.idea
 CrashlyticsCrashReporter/.idea
 CrittercismCrashReporter/.idea
-GoogleAnalyticsCrashReporter/.idea
-HockeyAppCrashReporter/.idea
+crashlog-googleanalytics/.idea
+crashlog-hockey/.idea
