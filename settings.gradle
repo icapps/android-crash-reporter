@@ -1,0 +1,3 @@
+include ':crashlog', ':crashlog-crittercism', ':crashlog-firebase', ':crashlog-googleanalytics', ':crashlog-hockey'
+
+rootProject.name = 'android-crash-reporter'
